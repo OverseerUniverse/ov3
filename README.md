@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ytmp3/assets/ascii-art-transp.png" alt="ov3 banner" width="600">
+  <img src="ytmp3/assets/ascii-art-transp.png" alt="ov3 banner" width="254">
 </p>
 
 # ov3
@@ -43,7 +43,9 @@ pipx install git+https://github.com/OverseerUniverse/ov3
 ```
 
 # Usage
-ytmp3 <youtube-url>
+```bash
+ytmp3 <"youtube-url">
+```
 
 ### Options
 
@@ -53,11 +55,16 @@ ytmp3 <youtube-url>
 | --format    | Output audio format                     | mp3     |
 | --output    | Output filename template (yt-dlp style) |         |
 
-# Examples
+### Examples
+```bash
 ytmp3 <URL> --quality 320
-ytmp3 <URL> --format flac
+```
 
-# Notes
+```bash
+ytmp3 <URL> --format flac
+```
+
+### Notes
 
 FFmpeg must be installed and discoverable on your PATH
 
