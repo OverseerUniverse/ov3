@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/ascii-art-transp.png" alt="ov3 banner" width="600">
+  <img src="ytmp3/assets/ascii-art-transp.png" alt="ov3 banner" width="600">
 </p>
 
 # ov3
@@ -29,39 +29,36 @@ Built as a thin wrapper around `yt-dlp` and `FFmpeg`.
 
 ---
 
-## Install FFmpeg
+## Installation
 
-From the project root:
+Install via pipx (local project)
 
 ```bash
 pipx install .
+```
 
-Or from GitHub:
-
+Install from GitHub
 ```bash
-pipx install git+https://github.com/your-username/ytmp3
+pipx install git+https://github.com/OverseerUniverse/ov3
+```
 
----
-
-### Usage
-
-```bat
+# Usage
 ytmp3 <youtube-url>
 
-Options
-Flag	Description	Default
---quality   Audio bitrate (128, 192, 256, 320)  [default: 192]
---format    Output audio format                 [default: mp3]
---output    Output filename template
+### Options
 
+| Flag        | Description                             | Default |
+|-------------|-----------------------------------------|---------|
+| --quality   | Audio bitrate (128, 192, 256, 320)      | 192     |
+| --format    | Output audio format                     | mp3     |
+| --output    | Output filename template (yt-dlp style) |         |
 
-Examples:
+# Examples
+ytmp3 <URL> --quality 320
+ytmp3 <URL> --format flac
 
-ytmp3 URL --quality 320
-ytmp3 URL --format flac
+# Notes
 
-Notes
-
-FFmpeg must be installed and discoverable on PATH
+FFmpeg must be installed and discoverable on your PATH
 
 Only download content you own or have permission to download
