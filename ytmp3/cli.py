@@ -8,7 +8,9 @@ from yt_dlp.utils import DownloadError, PostProcessingError
 import shutil
 
 QUALITIES = {"128", "192", "256", "320"}
-COMMON_FORMATS = {"mp3", "m4a", "opus", "flac", "wav", "aac"}
+AUDIO_FORMATS = {"mp3", "m4a", "opus", "flac", "wav", "aac"}
+VIDEO_FORMATS = {"mp4"}
+COMMON_FORMATS = AUDIO_FORMATS | VIDEO_FORMATS
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -29,7 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--format",
         default="mp3",
-        help="Audio format/extension (default: mp3). Must be supported by FFmpeg.",
+        help="Output format/extension (default: mp3). For video use: mp4.",
     )
     return parser.parse_args()
 
@@ -38,6 +40,20 @@ def build_opts(args: argparse.Namespace) -> dict:
     out_path = Path(args.output)
     if out_path.parent and not out_path.parent.exists():
         out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if args.format in VIDEO_FORMATS:
+        return {
+            "format": "bv*+ba/b",
+            "merge_output_format": args.format,
+            "outtmpl": args.output,
+            "postprocessors": [
+                {"key": "FFmpegVideoRemuxer", "preferedformat": args.format}
+            ],
+            "noplaylist": True,
+            "quiet": False,
+            "no_warnings": True,
+            "restrictfilenames": True,
+        }
 
     postprocessors = [{
         "key": "FFmpegExtractAudio",
@@ -60,6 +76,7 @@ def main() -> None:
         sys.exit("FFmpeg not found. Install it and ensure it is on your PATH.")
 
     args = parse_args()
+    args.format = args.format.lower()
     if not args.url.strip():
         sys.exit("Error: URL is empty.")
 
@@ -69,13 +86,16 @@ def main() -> None:
             file=sys.stderr,
         )
 
+    if args.format in VIDEO_FORMATS and args.quality != "192":
+        print("Note: --quality is ignored for video (mp4) downloads.", file=sys.stderr)
+
     opts = build_opts(args) 
 
     try:
         with YoutubeDL(opts) as ydl:
             print("Starting download…")
             ydl.download([args.url])
-            print("Success: audio saved (check the current directory or your --output path)")
+            print("Success: file saved (check the current directory or your --output path)")
     except DownloadError as e:
         sys.exit(f"Download failed: {e}")
     except PostProcessingError as e:

@@ -18,6 +18,7 @@ Built as a thin wrapper around `yt-dlp` and `FFmpeg`.
 - Clean, simple CLI
 - Cross-platform (Windows, macOS, Linux)
 - Installed globally via `pipx`
+- Added mp4
 
 ---
 
@@ -52,7 +53,7 @@ ytmp3 <"youtube-url">
 | Flag        | Description                             | Default |
 |-------------|-----------------------------------------|---------|
 | --quality   | Audio bitrate (128, 192, 256, 320)      | 192     |
-| --format    | Output audio format                     | mp3     |
+| --format    | Output audio format (includes mp4)      | mp3     |
 | --output    | Output filename template (yt-dlp style) |         |
 
 ### Examples
