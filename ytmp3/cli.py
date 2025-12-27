@@ -72,10 +72,16 @@ def build_opts(args: argparse.Namespace, start_seconds: Optional[int], end_secon
         out_path.parent.mkdir(parents=True, exist_ok=True)
 
     download_sections = None
+    external_downloader_args = None
     if start_seconds is not None or end_seconds is not None:
         start_str = "" if start_seconds is None else str(start_seconds)
         end_str = "" if end_seconds is None else str(end_seconds)
         download_sections = [f"*{start_str}-{end_str}"]
+        external_downloader_args = []
+        if start_seconds is not None:
+            external_downloader_args += ["-ss", str(start_seconds)]
+        if end_seconds is not None:
+            external_downloader_args += ["-to", str(end_seconds)]
 
     if args.format in VIDEO_FORMATS:
         opts = {
@@ -93,6 +99,10 @@ def build_opts(args: argparse.Namespace, start_seconds: Optional[int], end_secon
         if download_sections is not None:
             opts["download_sections"] = download_sections
             opts["force_keyframes_at_cuts"] = True
+            # Prefer ffmpeg for sectioned downloads to avoid full-file download.
+            opts["external_downloader"] = "ffmpeg"
+            if external_downloader_args:
+                opts["external_downloader_args"] = external_downloader_args
         return opts
 
     postprocessors = [{
@@ -113,6 +123,10 @@ def build_opts(args: argparse.Namespace, start_seconds: Optional[int], end_secon
     if download_sections is not None:
         opts["download_sections"] = download_sections
         opts["force_keyframes_at_cuts"] = True
+        # Prefer ffmpeg for sectioned downloads to avoid full-file download.
+        opts["external_downloader"] = "ffmpeg"
+        if external_downloader_args:
+            opts["external_downloader_args"] = external_downloader_args
     return opts
 
 def main() -> None:
