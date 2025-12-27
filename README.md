@@ -55,10 +55,16 @@ ytmp3 <"youtube-url">
 | --quality   | Audio bitrate (128, 192, 256, 320)      | 192     |
 | --format    | Output audio format (includes mp4)      | mp3     |
 | --output    | Output filename template (yt-dlp style) |         |
+| --start     | Start timestamp for a clip              | 0 secs  |
+| --end       | End timestamp for a clip                | vid len |
 
 ### Examples
 ```bash
 ytmp3 <URL> --quality 320
+```
+
+```bash
+ytmp3 <url> --start 0:30 --end 1:45
 ```
 
 ```bash
